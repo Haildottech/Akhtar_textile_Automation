@@ -98,7 +98,7 @@ def Ammend_Fields(file_path,username,password):
             
             print("[Extracted Info] \n ")
             print(f"<PO> : {PO}")
-            print(f"<Line No> : {L_NO}")
+            print(f"<Line No> : {index}")
             print(f"<date> : {date}")
             search = f'ViewSOAction.action?so_number={booking_id}&amp;searchByShipper_id'
             driver.get("https://booking.damco.com/ShipperPortalWeb/SearchAction.action")
@@ -116,7 +116,7 @@ def Ammend_Fields(file_path,username,password):
             search_po_number = driver.find_element(value='searchSObtn')
             search_po_number.send_keys(Keys.ENTER)
             
-            time.sleep(2)
+            WebDriverWait(driver,TIMEOUT).until(EC.presence_of_element_located((By.XPATH,f'//a[text()="{booking_id}"]')))
             a_tag = driver.find_element(by=By.XPATH, value= f'//a[text()="{booking_id}"]')
             a_tag.click()
 
@@ -268,6 +268,7 @@ def Ammend_Fields(file_path,username,password):
 
         
         except NoSuchElementException:
+            traceback.print_exc()
             print("Record not found.")
             df['booking_status'] = "failed" 
             df['booking_id'] = '-'

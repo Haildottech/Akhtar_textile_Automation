@@ -193,7 +193,7 @@ def Automate(file_path, username, password):
                 date = f"{df['Plan-HOD'].year}-{df['Plan-HOD'].month}-{df['Plan-HOD'].day}"
                 print("[Extracted Info] \n ")
                 print(f"<PO> : {PO}")
-                print(f"<Line No> : {L_NO}")
+                print(f"<Line No> : {index}")
                 parsed_date = datetime.strptime(date,'%Y-%m-%d')
                 date = parsed_date.strftime("%Y-%m-%d")
                 print(f"<date> : {date}")
