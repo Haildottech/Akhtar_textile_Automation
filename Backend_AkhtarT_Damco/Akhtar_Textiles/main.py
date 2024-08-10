@@ -250,7 +250,8 @@ def convert_date_to_numeric(date_string):
 
 def initiate_driver(URL):
     try:
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        service=ChromeService(ChromeDriverManager().install())
+        driver = webdriver.Chrome()
         driver.get(URL)
         print(Fore.GREEN + f"[Info] driver initiated successfully")
         print(Fore.RESET)
@@ -300,9 +301,24 @@ def form_submit(driver,row,scs_data,fld_data,db_data_lst_fld,db_data_lst_scs,df,
     month = str(date.strftime("%b"))
     day = str(date.strftime("%d"))
     year = str(date.strftime("%Y"))
+
+    today_date = datetime.today().date()
+    # Get the day of the month
+    day_of_month = str(today_date.day)
+
     wait_for_element_to_load(driver,By.XPATH,"//select[contains(@name,'1_eventDateTimeInTZ_month')]").send_keys(month)
     time.sleep(1)
-    wait_for_element_to_load(driver,By.XPATH,"//select[contains(@name,'1_eventDateTimeInTZ_day')]").send_keys(day)
+    day_drp = wait_for_element_to_load(driver,By.XPATH,"//select[contains(@name,'1_eventDateTimeInTZ_day')]")
+    if day_of_month == day:
+        js_code = """
+        const dropdown = arguments[0];
+        const valueToSelect = arguments[1];
+        dropdown.value = valueToSelect;
+            """
+        driver.execute_script(js_code, day_drp, day)
+    else:
+        day_drp.send_keys(day)
+    
     time.sleep(1)
     wait_for_element_to_load(driver,By.XPATH,"//select[contains(@name,'1_eventDateTimeInTZ_year')]").send_keys(year)
     time.sleep(1)
@@ -444,7 +460,7 @@ def fill_form(driver,df,mode):
                 if results_selected == '0':
                     wait_for_element_to_load(driver,By.XPATH,"//a[contains(.,'Select All')]").click()
                 results_selected = wait_for_element_to_load(driver,By.XPATH,"(//td[contains(.,'Packages Selected')]//following-sibling::td)[1]//span").text
-                result_found = wait_for_element_to_load(driver,By.XPATH,f'//div[contains(@id,"{row['PO Numbers:']}")]',7)
+                result_found = wait_for_element_to_load(driver,By.XPATH,f'//div[contains(@id,"{row['PO Numbers:']}")]',5)
                 # if str(results_selected) == str(row['CTN QTY']):
                 
                 if result_found is None:
@@ -475,50 +491,53 @@ def fill_form(driver,df,mode):
                     continue
                 
 
-                if (str(results_selected) == str(row['CTN QTY'])) and result_found is not None:
-
+                # if (str(results_selected) == str(row['CTN QTY'])) and result_found is not None:
+                if (str(results_selected) == str(row['CTN QTY'])):
+                    continue
+                if result_found is not None:
                     
                     
                     time.sleep(2)
                     wait_for_element_to_load(driver,By.XPATH,"(//button[contains(.,'Assign Equipment ID')])[1]").click()
-                    time.sleep(2)
+                    # time.sleep(2)
                     wait_for_element_to_load(driver,By.XPATH,"//form[contains(.,'Container/Equipment #:')]//input").send_keys(row['Assign Equipment ID'])
-                    time.sleep(2)
+                    # time.sleep(2)
                     wait_for_element_to_load(driver,By.XPATH,"//button[contains(.,'Apply')]").click()
 
                     try:
                         
                         wait_for_element_to_load(driver,By.XPATH,'(//button[contains(.,"OK")])[2]',2).click()
-                        time.sleep(2)
+                        # time.sleep(2)
                     except :
-                        time.sleep(2)
+                        pass
+                        # time.sleep(2)
                     
 
                     time.sleep(2)
                     home = driver.find_element(By.XPATH,"(//a[@id='navmenu__home'])[1]").get_attribute('href')
                     driver.get(home)
-                    pr_scan_ship_href = wait_for_element_to_load(
-                    driver,By.ID,"navmenu__inprogressmanifestsprintscanship").get_attribute('href')
-                    driver.get(pr_scan_ship_href)
+                    # pr_scan_ship_href = wait_for_element_to_load(
+                    # driver,By.ID,"navmenu__inprogressmanifestsprintscanship").get_attribute('href')
+                    # driver.get(pr_scan_ship_href)
 
-                    create_shipment_href = wait_for_element_to_load(
-                    driver,By.XPATH,'//a[contains(.,"Create Shipment")]').click()
-                    time.sleep(3)
-                    wait_for_element_to_load(driver,By.XPATH,"//input[@name='poNum']").send_keys(row['PO Numbers:'])
-                    days = driver.find_element(By.XPATH,"//input[@name='executionDateDays']")
-                    print(days)
-                    days.clear()
-                    time.sleep(2)
-                    wait_for_element_to_load(driver,By.XPATH,"//button[contains(.,'OK')]").click()
-                    wait_for_element_to_load(driver,By.XPATH,"(//div[contains(@class,'hd-checker')])[1]").click()
-                    wait_for_element_to_load(driver,By.XPATH,"(//button[contains(.,'Create Shipment')])[1]").click()
-                    # print(row['Booking Number'],row['Shipment Load Type'],
-                    #       row['Invoice Number'],row['BL / Waybill #'],row['Select Carrier'],
-                    #       row['Updated Transload Location (US Only)'],row['Estimated Departure Date'],
-                    #       row['Equipment # Type'],row['Seal Number'])
-                    print(Fore.GREEN + f'[INFO] Filling form')
-                    print(Fore.RESET)
-                    form_submit(driver,row,success_data,failed_data,db_data_lst_fld,db_data_lst_scs,df,mode)
+                    # create_shipment_href = wait_for_element_to_load(
+                    # driver,By.XPATH,'//a[contains(.,"Create Shipment")]').click()
+                    # time.sleep(3)
+                    # wait_for_element_to_load(driver,By.XPATH,"//input[@name='poNum']").send_keys(row['PO Numbers:'])
+                    # days = driver.find_element(By.XPATH,"//input[@name='executionDateDays']")
+                    # print(days)
+                    # days.clear()
+                    # time.sleep(2)
+                    # wait_for_element_to_load(driver,By.XPATH,"//button[contains(.,'OK')]").click()
+                    # wait_for_element_to_load(driver,By.XPATH,"(//div[contains(@class,'hd-checker')])[1]").click()
+                    # wait_for_element_to_load(driver,By.XPATH,"(//button[contains(.,'Create Shipment')])[1]").click()
+                    # # print(row['Booking Number'],row['Shipment Load Type'],
+                    # #       row['Invoice Number'],row['BL / Waybill #'],row['Select Carrier'],
+                    # #       row['Updated Transload Location (US Only)'],row['Estimated Departure Date'],
+                    # #       row['Equipment # Type'],row['Seal Number'])
+                    # print(Fore.GREEN + f'[INFO] Filling form')
+                    # print(Fore.RESET)
+                    # form_submit(driver,row,success_data,failed_data,db_data_lst_fld,db_data_lst_scs,df,mode)
                 else:
                     keep_open(driver)
                     print(Fore.RED + f'[INFO] Reaults didnt matched for PO number:{row["PO Numbers:"]}')

@@ -77,7 +77,7 @@ try:
 
     label_filepath_AT = ttk.Label(frame, text='Filepath:',
                         font=('Helvetica',11))
-    label_filepath_AT.place(relx=0.13,rely=0.145,anchor=N)
+    label_filepath_AT.place(relx=0.13,rely=0.146,anchor=N)
 
     file_entry_AT = ttk.Entry(frame,bootstyle='primary',width=50)
 
@@ -88,18 +88,24 @@ try:
 
     nb.add(frame,text='Akhtar Textile Automation')
 
-
+    label_username_AT = ttk.Label(frame, text='Username:',
+                        font=('Helvetica',11))
+    label_username_AT.place(relx=0.145,rely=0.23,anchor=N)
     username_AT = ttk.Entry(frame,bootstyle='primary',width=50)
 
     apply_placeholder(username_AT, 'Username')
 
-    username_AT.place(relx=0.7,rely=0.25,anchor=E)
+    username_AT.place(relx=0.7,rely=0.28,anchor=E)
+
+    label_password_AT = ttk.Label(frame, text='Password:',
+                        font=('Helvetica',11))
+    label_password_AT.place(relx=0.145,rely=0.31,anchor=N)
 
     password_AT = ttk.Entry(frame,bootstyle='primary',width=50)
 
     apply_placeholder(password_AT, 'Password')
 
-    password_AT.place(relx=0.7,rely=0.3,anchor=E)
+    password_AT.place(relx=0.7,rely=0.36,anchor=E)
                             
 
     def execute_bot():
@@ -146,17 +152,17 @@ try:
     mode = StringVar()
 
     preview_button = ttk.Radiobutton(frame,text='Preview',variable=mode,value='Preview')
-    preview_button.place(relx=0.20,rely=0.35,anchor=E)
+    preview_button.place(relx=0.20,rely=0.41,anchor=E)
 
     approve_button = ttk.Radiobutton(frame,text='Approve',variable=mode,value='Approve')
-    approve_button.place(relx=0.40,rely=0.35,anchor=E)
+    approve_button.place(relx=0.40,rely=0.41,anchor=E)
 
     execute_button_AT = ttk.Button(
                     frame,
                     width=46, text="Execute", 
                     bootstyle=PRIMARY,command=execute_bot,
                     style='primary.TButton')
-    execute_button_AT.place(relx=0.95,rely=0.40,anchor=E)
+    execute_button_AT.place(relx=0.95,rely=0.46,anchor=E)
 
     try:
         cond_AT = requests.get("https://saim2481.pythonanywhere.com/ATactivation-response/")
@@ -220,7 +226,7 @@ try:
 
     label_filepath_DAMCO = ttk.Label(frame2, text='Filepath:',
                         font=('Helvetica',11))
-    label_filepath_DAMCO.place(relx=0.13,rely=0.145,anchor=N)
+    label_filepath_DAMCO.place(relx=0.13,rely=0.146,anchor=N)
     file_entry_DAMCO = ttk.Entry(frame2,bootstyle='primary',width=50)
 
     apply_placeholder(file_entry_DAMCO, 'Path to file')
@@ -228,19 +234,25 @@ try:
     file_entry_DAMCO.place(relx=0.7,rely=0.2,anchor=E)
     # file_entry_1.place(re)
 
-
+    label_username_DAMCO = ttk.Label(frame2, text='Username:',
+                        font=('Helvetica',11))
+    label_username_DAMCO.place(relx=0.145,rely=0.23,anchor=N)
 
     username_DAMCO = ttk.Entry(frame2,bootstyle='primary',width=50)
 
     apply_placeholder(username_DAMCO, 'Username')
 
-    username_DAMCO.place(relx=0.7,rely=0.25,anchor=E)
+    username_DAMCO.place(relx=0.7,rely=0.28,anchor=E)
+
+    label_password_DAMCO = ttk.Label(frame2, text='Password:',
+                        font=('Helvetica',11))
+    label_password_DAMCO.place(relx=0.145,rely=0.31,anchor=N)
 
     password_DAMCO = ttk.Entry(frame2,bootstyle='primary',width=50)
 
     apply_placeholder(password_DAMCO, 'Password')
 
-    password_DAMCO.place(relx=0.7,rely=0.3,anchor=E)
+    password_DAMCO.place(relx=0.7,rely=0.36,anchor=E)
 
 
     try:
@@ -262,14 +274,14 @@ try:
                     width=46, text="Execute", 
                     bootstyle=PRIMARY,command=execute,
                     style='primary.TButton')
-    execute_button_DAMCO.place(relx=0.95,rely=0.37,anchor=E)
+    execute_button_DAMCO.place(relx=0.95,rely=0.42,anchor=E)
 
     ammend_button_AT = ttk.Button(
                     frame2,
                     width=46, text="Ammend", 
                     bootstyle=PRIMARY,command=Ammend_data,
                     style='primary.TButton')
-    ammend_button_AT.place(relx=0.95,rely=0.43,anchor=E)
+    ammend_button_AT.place(relx=0.95,rely=0.48,anchor=E)
 
     print("-->",cond)
     if not cond == "true":

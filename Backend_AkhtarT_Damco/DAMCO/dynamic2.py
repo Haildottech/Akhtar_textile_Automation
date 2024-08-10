@@ -494,3 +494,5 @@ progressStatusId is ID for draft
 2100045080
 '''
 
+
+# Automate(file_path=r"C:\Users\SAAD\Downloads\AUTO Data NON USA ONLY (2).xlsx", username="hamid@akhtar.com.pk", password="panhwar123")
